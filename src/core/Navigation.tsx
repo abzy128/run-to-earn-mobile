@@ -3,9 +3,9 @@ import {BottomNavigation} from 'react-native-paper';
 import MainRoute from '../main/Main';
 import MarketRoute from '../market/MarketRoute';
 import ProfileRoute from '../profile/ProfileRoute';
-import {Theme} from '@react-navigation/native';
+import {ThemeProp} from 'react-native-paper/lib/typescript/types';
 
-function Navigation({theme}: {theme: Theme}) {
+function Navigation({theme}: {theme: ThemeProp}) {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {
