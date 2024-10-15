@@ -25,11 +25,6 @@ export default function Main() {
   return (
     <PaperProvider theme={theme}>
       <TopBar />
-      <Button
-        icon="alarm"
-        mode="contained"
-        onPress={() => console.log('Pressed')}
-      />
       <Navigation />
     </PaperProvider>
   );

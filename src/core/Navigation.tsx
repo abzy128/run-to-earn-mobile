@@ -11,8 +11,7 @@ function Navigation({theme}: {theme: ThemeProp}) {
     {
       key: 'main',
       title: 'Running',
-      focusedIcon: 'heart',
-      unfocusedIcon: 'heart-outline',
+      focusedIcon: 'run',
     },
     {key: 'market', title: 'Market', focusedIcon: 'shopping'},
     {key: 'profile', title: 'Profile', focusedIcon: 'account'},

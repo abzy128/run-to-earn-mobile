@@ -1,8 +1,13 @@
 import React from 'react';
+import {View} from 'react-native';
 import {Text} from 'react-native-paper';
 
 function MainRoute() {
-  return <Text>Main</Text>;
+  return (
+    <View>
+      <Text>Running</Text>
+    </View>
+  );
 }
 
 export default MainRoute;
