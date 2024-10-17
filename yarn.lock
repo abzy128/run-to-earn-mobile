@@ -7852,6 +7852,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-health-connect@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "react-native-health-connect@npm:3.2.1"
+  peerDependencies:
+    "@expo/config-plugins": ">= 6.0.2"
+    react: "*"
+    react-native: "*"
+  checksum: 8c83af89085f3b8903791cce5640e0c93c25312994c66c77ee48ee7dfc09876d4f30629de2f4225f8a2e00628c9601c43db61b217185f1d7b45cc3f6b84405b1
+  languageName: node
+  linkType: hard
+
 "react-native-paper@npm:^5.12.5":
   version: 5.12.5
   resolution: "react-native-paper@npm:5.12.5"
@@ -8324,6 +8335,7 @@ __metadata:
     prettier: 2.8.8
     react: 18.3.1
     react-native: 0.75.4
+    react-native-health-connect: ^3.2.1
     react-native-paper: ^5.12.5
     react-native-safe-area-context: ^4.11.0
     react-native-screens: ^3.34.0

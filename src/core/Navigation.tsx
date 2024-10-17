@@ -1,6 +1,6 @@
 import React from 'react';
 import {BottomNavigation} from 'react-native-paper';
-import MainRoute from '../main/Main';
+import RunningRoute from '../running/RunningRoute';
 import MarketRoute from '../market/MarketRoute';
 import ProfileRoute from '../profile/ProfileRoute';
 import {ThemeProp} from 'react-native-paper/lib/typescript/types';
@@ -9,7 +9,7 @@ function Navigation({theme}: {theme: ThemeProp}) {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {
-      key: 'main',
+      key: 'running',
       title: 'Running',
       focusedIcon: 'run',
     },
@@ -18,7 +18,7 @@ function Navigation({theme}: {theme: ThemeProp}) {
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
-    main: MainRoute,
+    running: RunningRoute,
     market: MarketRoute,
     profile: ProfileRoute,
   });
