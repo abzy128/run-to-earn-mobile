@@ -2,6 +2,7 @@ import {
   initialize,
   requestPermission,
   readRecords,
+  insertRecords,
 } from 'react-native-health-connect';
 import React from 'react';
 import {View, ToastAndroid} from 'react-native';
@@ -17,16 +18,33 @@ async function readSampleData(startTime: Date) {
       endTime: new Date().toISOString(),
     },
   });
+  console.log('readSampleData', result);
   return result;
+}
+
+async function writeRecords(steps: number) {
+  await initialize();
+  await requestPermission([{accessType: 'write', recordType: 'Steps'}]);
+
+  const writeResult = await insertRecords([
+    {
+      recordType: 'Steps',
+      count: steps,
+      startTime: new Date().toISOString(),
+      endTime: new Date().toISOString(),
+    },
+  ]);
+  return writeResult;
 }
 
 function RunningRoute() {
   const [startTime, setStartTime] = React.useState<Date | null>(null);
   const [steps, setSteps] = React.useState<number | null>(null);
+  const [isWriteSteps, setIsWriteSteps] = React.useState(false);
 
   function startSession() {
     if (!startTime) {
-      const someTimeAgo = new Date(2024, 10, 18, 2, 0, 0);
+      const someTimeAgo = new Date(2024, 9, 19);
       let message = `startTime: ${someTimeAgo.toISOString()}`;
       ToastAndroid.show(message, ToastAndroid.SHORT);
       setStartTime(someTimeAgo);
@@ -34,11 +52,15 @@ function RunningRoute() {
       setStartTime(null);
     }
   }
+  function writeSteps() {
+    isWriteSteps ? setIsWriteSteps(false) : setIsWriteSteps(true);
+  }
 
   React.useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let stepInterval: NodeJS.Timeout;
+    let writeInterval: NodeJS.Timeout;
     if (startTime) {
-      interval = setInterval(async () => {
+      stepInterval = setInterval(async () => {
         const result = await readSampleData(startTime);
         let message = `records: ${result.records.length}`;
         ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -49,17 +71,33 @@ function RunningRoute() {
         setSteps(totalSteps);
       }, 1000);
     }
+    if (isWriteSteps) {
+      writeInterval = setInterval(async () => {
+        const result = await writeRecords(1);
+        let message = `writeResult: ${result}`;
+        ToastAndroid.show(message, ToastAndroid.SHORT);
+      }, 1000);
+    }
 
     return () => {
-      if (interval) {
-        clearInterval(interval);
+      if (stepInterval) {
+        clearInterval(stepInterval);
+      }
+      if (writeInterval) {
+        clearInterval(writeInterval);
       }
     };
-  }, [startTime]);
+  }, [startTime, isWriteSteps]);
 
   return (
     <View>
-      <Button mode="contained" onPress={startSession}>Start Session</Button>
+      <Button mode="contained" onPress={writeSteps}>
+        Test Write
+      </Button>
+      <Button mode="contained" onPress={startSession}>
+        Start Session
+      </Button>
+      <Text>Step Data: </Text>
       {steps !== null && <Text key="stepCounter">Steps: {steps}</Text>}
     </View>
   );
