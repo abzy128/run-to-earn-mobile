@@ -9,6 +9,9 @@ import {name as appName} from './app.json';
 import Navigation from './src/core/Navigation';
 import TopBar from './src/core/TopBar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import 'node-libs-react-native/globals';
+import 'react-native-url-polyfill/auto';
+import 'react-native-get-random-values';
 
 const theme = {
   ...DefaultTheme,

@@ -7,6 +7,7 @@ import React from 'react';
 import {ToastAndroid, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {UpdateEndLocation, UpdateStartLocation} from '../map/MapPins';
+import {useSDK} from '@metamask/sdk-react';
 
 function RunningRoute() {
   const [isSessionActive, setIsSessionActive] = React.useState(false);
