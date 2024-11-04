@@ -1,36 +1,9 @@
-import * as React from 'react';
-import {AppRegistry} from 'react-native';
-import {
-  Button,
-  MD3DarkTheme as DefaultTheme,
-  PaperProvider,
-} from 'react-native-paper';
-import {name as appName} from './app.json';
-import Navigation from './src/core/Navigation';
-import TopBar from './src/core/TopBar';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import 'node-libs-react-native/globals';
 import 'react-native-url-polyfill/auto';
 import 'react-native-get-random-values';
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'tomato',
-    secondary: 'yellow',
-  },
-};
+import {AppRegistry} from 'react-native';
+import {SafeApp} from './App';
+import {name as appName} from './app.json';
 
-Icon.loadFont();
-
-export default function Main() {
-  return (
-    <PaperProvider theme={theme}>
-      <TopBar />
-      <Navigation />
-    </PaperProvider>
-  );
-}
-
-AppRegistry.registerComponent(appName, () => Main);
+AppRegistry.registerComponent(appName, () => SafeApp);
