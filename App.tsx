@@ -7,6 +7,7 @@ import Navigation from './src/core/Navigation';
 import TopBar from './src/core/TopBar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import React from 'react';
+import Config from 'react-native-config';
 
 import {
   MetaMaskProvider,
@@ -45,7 +46,7 @@ const WithSDKConfig = ({children}: {children: React.ReactNode}) => {
         communicationServerUrl: socketServer,
         infuraAPIKey,
         readonlyRPCMap: {
-          '0x539': process.env.NEXT_PUBLIC_PROVIDER_RPCURL ?? '',
+          '0x539': Config.NEXT_PUBLIC_PROVIDER_RPCURL ?? '',
         },
         logging: {
           developerMode: true,

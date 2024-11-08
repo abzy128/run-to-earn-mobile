@@ -4,10 +4,14 @@ import {
   readRecords,
 } from 'react-native-health-connect';
 import React from 'react';
-import {ToastAndroid, View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {UpdateEndLocation, UpdateStartLocation} from '../map/MapPins';
-import {useSDK} from '@metamask/sdk-react';
+import './RunningRouteStyles.ts';
+import {styles} from './RunningRouteStyles.ts';
+
+export let stepStatus = false;
+export let globalSteps = 0;
 
 function RunningRoute() {
   const [isSessionActive, setIsSessionActive] = React.useState(false);
@@ -42,7 +46,7 @@ function RunningRoute() {
       },
     }).then(({records}) => {
       let result = records.reduce(
-        (acc, record) => acc + record.energy.inCalories,
+        (acc, record) => acc + record.energy.inKilocalories,
         0,
       );
       setTotalCalories(result);
@@ -60,20 +64,12 @@ function RunningRoute() {
       );
       setDistance(result);
     });
-
-    readRecords('Speed', {
-      timeRangeFilter: {
-        operator: 'after',
-        startTime: start.toISOString(),
-      },
-    }).then(({records}) => {
-      // average speed
-      //
-      // setTotalCalories(result);
-    });
   }
 
   function startSession() {
+    if (promptRecordErase() === false) {
+      return;
+    }
     setIsSessionActive(true);
     setStartTime(new Date());
     setSteps(null);
@@ -87,11 +83,44 @@ function RunningRoute() {
   }
 
   function testSteps() {
+    if (promptRecordErase() === false) {
+      return;
+    }
+    setIsSessionActive(true);
     setStartTime(new Date(2024, 8, 20));
     readSampleData(new Date(2024, 8, 20));
   }
 
+  function promptRecordErase(): boolean {
+    let allowRecording: boolean = true;
+    if (steps !== null && !isSessionActive) {
+      Alert.alert(
+        'Steps are recorded',
+        'Starting new session removes current record. Do you want to start a new session?',
+        [
+          {
+            text: 'No',
+            onPress: () => {
+              allowRecording = false;
+            },
+            style: 'cancel',
+          },
+          {
+            text: 'Yes',
+            onPress: () => {
+              allowRecording = true;
+            },
+            style: 'destructive',
+          },
+        ],
+      );
+    }
+    return allowRecording;
+  }
+
   React.useEffect(() => {
+    globalSteps = steps || 0;
+    stepStatus = isSessionActive;
     let stepInterval: NodeJS.Timeout;
     let writeInterval: NodeJS.Timeout;
     if (isSessionActive) {
@@ -108,34 +137,49 @@ function RunningRoute() {
         clearInterval(writeInterval);
       }
     };
-  }, [isSessionActive, startTime]);
+  }, [isSessionActive, startTime, steps]);
 
   return (
-    <View>
-      {!isSessionActive && (
-        <Button mode="contained" onPress={testSteps}>
-          Test Steps
-        </Button>
-      )}
-      {!isSessionActive && (
-        <Button mode="contained" onPress={startSession}>
-          Start Session
-        </Button>
-      )}
-      {isSessionActive && (
-        <Button mode="contained" onPress={stopSession}>
-          Stop Session
-        </Button>
-      )}
-      {startTime !== null && <Text>Start Time: {startTime.toString()}</Text>}
-      {endTime !== null && <Text>End Time: {endTime.toString()}</Text>}
-      {steps !== null && <Text key="stepCounter">Steps: {steps}</Text>}
-      {totalCalories !== null && (
-        <Text key="caloriesCounter">Calories: {totalCalories}</Text>
-      )}
-      {distance !== null && (
-        <Text key="distanceCounter">Distance: {distance}</Text>
-      )}
+    <View style={styles.runningContainer}>
+      <View style={styles.runningContainer}>
+        {steps !== null && (
+          <View style={styles.stepsContainer}>
+            <Text style={styles.stepsText}>{steps}</Text>
+            <Text>Steps</Text>
+          </View>
+        )}
+        {!isSessionActive && (
+          <Button mode="contained" style={styles.button} onPress={startSession}>
+            Start Session
+          </Button>
+        )}
+        {isSessionActive && (
+          <Button mode="contained" style={styles.button} onPress={stopSession}>
+            Stop Session
+          </Button>
+        )}
+        {startTime !== null && (
+          <Text>Start Time: {startTime.toLocaleString()}</Text>
+        )}
+        {endTime !== null && <Text>End Time: {endTime.toLocaleString()}</Text>}
+        {totalCalories !== null && (
+          <Text key="caloriesCounter">
+            Calories: {totalCalories.toFixed(0)}
+          </Text>
+        )}
+        {distance !== null && (
+          <Text key="distanceCounter">
+            Distance: {distance.toFixed(0)} meters
+          </Text>
+        )}
+      </View>
+      <View style={styles.demoContainer}>
+        {!isSessionActive && (
+          <Button mode="contained" style={styles.button} onPress={testSteps}>
+            Demo
+          </Button>
+        )}
+      </View>
     </View>
   );
 }
