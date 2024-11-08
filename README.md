@@ -16,11 +16,31 @@
 
 ### Running
 
-![Running](./assets/screenshots/Screenshot_20241021-015437.png)
+![Running](./assets/screenshots/Screenshot_20241108-115915.png)
 
 ### Map
 
-![Map](./assets/screenshots/Screenshot_20241021-015459.png)
+![Map](./assets/screenshots/Screenshot_20241108-115923.png)
+
+### Market
+
+![Market](./assets/screenshots/Screenshot_20241108-115930.png)
+
+### Profile (before connection)
+
+![Profile](./assets/screenshots/Screenshot_20241108-120550.png)
+
+### Connection with Metamask
+
+![Connection](./assets/screenshots/Screenshot_20241108-115959.png)
+
+### Profile (when connected)
+
+![Profile](./assets/screenshots/Screenshot_20241108-115937.png)
+
+## Claiming Earnings
+
+![Claim](./assets/screenshots/Screenshot_20241108-115941.png)
 
 ## Examples
 
