@@ -72,11 +72,9 @@ function ProfileRoute() {
     }
     try {
       var fromGweiSteps = globalSteps * 10 ** 18;
+      Alert.alert('Claiming tokens', `Claiming ${globalSteps} RTE for ${globalSteps} steps`);
       var text = await fetch(
-        `http://kreslo.abzy.kz:8000/api/run/mint?address=${account}&amount=${fromGweiSteps.toLocaleString(
-          'fullwide',
-          {useGrouping: false},
-        )}`,
+        `http://kreslo.abzy.kz:8000/api/run/mint?address=${account}&amount=${fromGweiSteps.toLocaleString('fullwide', {useGrouping:false})}`,
         {
           method: 'POST',
         },
